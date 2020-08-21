@@ -17,7 +17,9 @@
   border-radius: 12px;
   display: flex;
   align-items:center;
-  justify-content: space-between;
+  justify-content: space-between; 
+  box-shadow:  20px 20px 60px #c8c8c8, 
+             -20px -20px 60px #ffffff;
 } 
 
 /* .input{
