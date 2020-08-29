@@ -1,19 +1,19 @@
 import React from "react"
 
-function Todo({ todo, index, completeTodo, removeTodo }) {
+function Todo({ todo, completeTodo, removeTodo }) {
     return (
       <div
-        className="todo"
-        style={{ textDecoration: todo.isCompleted ? "line-through" : "" }}>
-        <label class=".text-xl .break-words">{todo.text}</label>
+        className="todo border-2"
+        style={{ textDecoration: todo.data.done ? "line-through" : "" }}>
+        <label className=".text-xl .break-words">{todo.data.todo}</label>
   
-        <div class="md:flex-shrink-0">
+        <div className="md:flex-shrink-0">
           <button
-          class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-          onClick={() => completeTodo(index)}> {todo.isCompleted ? "Uncomplete" : "Complete"}</button>
+          className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+          onClick={() => completeTodo(todo)}> {todo.data.done ? "Uncomplete" : "Complete"}</button>
           <button 
-          class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-          onClick={() => removeTodo(index)}>x</button>
+          className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+          onClick={() => removeTodo(todo.id)}>x</button>
         </div>
       </div>
     );

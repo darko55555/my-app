@@ -4,39 +4,58 @@ import './tailwind.output.css';
 import Title from "./components/Title";
 import Todo from "./components/Todo";
 import TodoForm from "./components/TodoForm";
+import { useEffect } from "react";
+import db from "./firebase";
+import firebase from "firebase";
 
 
 function App() {
+
   const [todos, setTodos] = useState([]);
 
+  useEffect(() => {
+    db.collection("todos")
+    .orderBy("timestamp", "desc")
+    .onSnapshot(snapshot => (
+        setTodos(snapshot.docs.map( doc => (
+            {id: doc.id, data: doc.data()}
+          )
+        ))
+    ))
+  }, [])
+
+
+
   const addTodo = text => {
-    const newTodos = [...todos, { text }];
-    setTodos(newTodos);
+    db.collection("todos").add({
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      done:false,
+      todo:text
+    })
   };
 
-  const completeTodo = index => {
-    const newTodos = [...todos];
-    const currentTodoCompleted = newTodos[index].isCompleted
-    newTodos[index].isCompleted = !currentTodoCompleted;
-    
-    setTodos(newTodos);
+  const completeTodo = todoObj => {
+    db.collection("todos").doc(todoObj.id).set(
+      {
+        todo: todoObj.data.todo, done:!todoObj.data.done
+       }
+    )
   };
 
-  const removeTodo = index => {
-    const newTodos = [...todos];
-    newTodos.splice(index, 1);
-    setTodos(newTodos);
+  const removeTodo = id => {
+    db.collection("todos").doc(id).delete()
   };
 
   return (
     <div className="lg:container lg:mx-auto px-4">
-    <div clasName="max-w-sm rounded overflow-hidden shadow-lg">
+
+    <div className="max-w-sm rounded overflow-hidden shadow-lg">
+
       <div>
       <Title/>
-        {todos.map((todo, index) => (
+        {todos.map((todo) => (
           <Todo
-            key={index}
-            index={index}
+            key={todo.id}
             todo={todo}
             completeTodo={completeTodo}
             removeTodo={removeTodo}
@@ -44,7 +63,9 @@ function App() {
         ))}
         <TodoForm addTodo={addTodo} />
       </div>
+
     </div>
+
     </div>
   );
 }
