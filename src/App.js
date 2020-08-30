@@ -35,11 +35,7 @@ function App() {
   };
 
   const completeTodo = todoObj => {
-    db.collection("todos").doc(todoObj.id).set(
-      {
-        todo: todoObj.data.todo, done:!todoObj.data.done
-       }
-    )
+    db.collection("todos").doc(todoObj.id).update({done:!todoObj.data.done})
   };
 
   const removeTodo = id => {
