@@ -1,0 +1,14 @@
+.userInfo{
+    display: flex;
+    align-items:center;
+}
+
+.userInfoImage {
+    border-radius: 50%;
+    object-fit: cover;
+    height:45px;
+}
+
+.displayName{
+    margin-left: 20px;
+}

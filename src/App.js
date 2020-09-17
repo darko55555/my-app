@@ -1,69 +1,67 @@
 import React, { useState } from "react";
 import "./styles/App.css";
+import "./styles/Todo.css";
 import './tailwind.output.css';
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import Title from "./components/Title";
 import Todo from "./components/Todo";
 import TodoForm from "./components/TodoForm";
 import { useEffect } from "react";
 import db from "./firebase";
 import firebase from "firebase";
+import Login from "./components/Login";
+import { useStateValue } from "./StateProvider"
+import TasksList from "./components/TasksList";
 
+import { actionTypes } from "./reducer"
 
 function App() {
-
-  const [todos, setTodos] = useState([]);
+  
+  const [{}, dispatch] = useStateValue();
 
   useEffect(() => {
-    db.collection("todos")
-    .orderBy("timestamp", "desc")
-    .onSnapshot(snapshot => (
-        setTodos(snapshot.docs.map( doc => (
-            {id: doc.id, data: doc.data()}
-          )
-        ))
-    ))
+    firebase.auth().onAuthStateChanged(authUser => {
+      console.log("The user >>>", authUser)
+
+      if (authUser) {
+        // the user just logged in / the user was logged in
+
+        dispatch({
+          type: 'SET_USER',
+          user: authUser
+        })
+      } else {
+        // the user is logged out
+        dispatch({
+          type: 'SET_USER',
+          user: null
+        })
+      }
+
+    })
   }, [])
 
 
-
-  const addTodo = text => {
-    db.collection("todos").add({
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      done:false,
-      todo:text
-    })
-  };
-
-  const completeTodo = todoObj => {
-    db.collection("todos").doc(todoObj.id).update({done:!todoObj.data.done})
-  };
-
-  const removeTodo = id => {
-    db.collection("todos").doc(id).delete()
-  };
-
   return (
-    <div className="lg:container lg:mx-auto px-4">
-
-    <div className="max-w-sm rounded overflow-hidden shadow-lg">
-
-      <div>
-      <Title/>
-        {todos.map((todo) => (
-          <Todo
-            key={todo.id}
-            todo={todo}
-            completeTodo={completeTodo}
-            removeTodo={removeTodo}
-          />
-        ))}
-        <TodoForm addTodo={addTodo} />
+    <Router>
+      <div className="app">
+      <Switch>
+      <Route exact path="/" render={() => (
+             <Redirect to="/login"/>
+        )}/>
+         <Route exact path="/my-app" render={() => (
+             <Redirect to="/login"/>
+        )}/>
+        <Route exact path="/login">
+          <Login/>
+        </Route>
+        <Route exact path="/taskList">
+          <TasksList/>
+        </Route>
+      </Switch>
       </div>
-
-    </div>
-
-    </div>
-  );
+    </Router>
+  )
 }
 
 export default App;

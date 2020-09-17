@@ -1,0 +1,17 @@
+   {!user ? (
+         <Login/>
+      ) : (
+        <>
+        <Title/>
+        <UserInfo/>
+        {todos.map((todo) => (
+          <Todo
+            key={todo.id}
+            todo={todo}
+            completeTodo={completeTodo}
+            removeTodo={removeTodo}
+          />
+        ))}
+      <TodoForm addTodo={addTodo} />
+      </>
+      )}
