@@ -18,28 +18,29 @@ import { actionTypes } from "./reducer"
 function App() {
   
   const [{}, dispatch] = useStateValue();
+  const user = JSON.parse(localStorage.getItem("user"))
 
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(authUser => {
-      console.log("The user >>>", authUser)
+  // useEffect(() => {
+  //   firebase.auth().onAuthStateChanged(authUser => {
+  //     console.log("The user >>>", authUser)
 
-      if (authUser) {
-        // the user just logged in / the user was logged in
+  //     if (authUser) {
+  //       // the user just logged in / the user was logged in
 
-        dispatch({
-          type: 'SET_USER',
-          user: authUser
-        })
-      } else {
-        // the user is logged out
-        dispatch({
-          type: 'SET_USER',
-          user: null
-        })
-      }
+  //       dispatch({
+  //         type: 'SET_USER',
+  //         user: authUser
+  //       })
+  //     } else {
+  //       // the user is logged out
+  //       dispatch({
+  //         type: 'SET_USER',
+  //         user: null
+  //       })
+  //     }
 
-    })
-  }, [])
+  //   })
+  // }, [])
 
 
   return (
@@ -47,7 +48,7 @@ function App() {
       <div className="app">
       <Switch>
       <Route exact path="/" render={() => (
-             <Redirect to="/login"/>
+             user === null ? <Redirect to="/login"/> : <Redirect to="/taskList"/>
         )}/>
          <Route exact path="/my-app" render={() => (
              <Redirect to="/login"/>

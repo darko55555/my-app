@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "../styles/Login.css";
-import { auth, provider } from "../firebase";
+import { auth, persistence, provider } from "../firebase";
 import { actionTypes } from "../reducer";
 import { useStateValue } from "../StateProvider";
 import { useHistory } from "react-router-dom";
+import firebase from "firebase"
 
 function Login() {
   const [state, dispatch] = useStateValue();
@@ -13,13 +14,20 @@ function Login() {
     e.preventDefault();
 
     auth
-      .signInWithPopup(provider)
+      .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      .then( function() {
+        return auth.signInWithPopup(provider)
+        }
+      )
       .then((result) => {
+        localStorage.setItem("user", JSON.stringify(result.user)) 
+        // dispatch({
+        //   type: actionTypes.SET_USER,
+        //   user: result.user,
+        // });
+      })
+      .then( () => {
         history.push("/taskList")
-        dispatch({
-          type: actionTypes.SET_USER,
-          user: result.user,
-        });
       })
       .catch((error) => alert(error.message));
   };
