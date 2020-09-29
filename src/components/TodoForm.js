@@ -21,7 +21,7 @@ function TodoForm({ addTodo }) {
           onChange={e => setValue(e.target.value)}
         />
         <div className="py-2">
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleSubmit}> Add </button>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleSubmit}> Add todo </button>
         </div>
       </form>
     );

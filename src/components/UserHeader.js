@@ -26,11 +26,9 @@ function UserHeader(){
       },[]);
 
     return(
-        // console.log(user)
-        <div>
-            
+        <div className="flex flex-wrap bg-gray-200"> 
             <div>{user.displayName}</div>
-            <div> <button onClick={logOutUser}>Logout</button> </div>
+            <div><button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded absolute top-0 right-0" onClick={logOutUser}>Logout</button></div>
         </div>
     )
 }

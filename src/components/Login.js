@@ -21,10 +21,10 @@ function Login() {
       )
       .then((result) => {
         localStorage.setItem("user", JSON.stringify(result.user)) 
-        // dispatch({
-        //   type: actionTypes.SET_USER,
-        //   user: result.user,
-        // });
+        dispatch({
+          type: actionTypes.SET_USER,
+          user: result.user,
+        });
       })
       .then( () => {
         history.push("/taskList")

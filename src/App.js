@@ -45,7 +45,7 @@ function App() {
 
   return (
     <Router>
-      <div className="app">
+      <div className="app container mx-auto px-4">
       <Switch>
       <Route exact path="/" render={() => (
              user === null ? <Redirect to="/login"/> : <Redirect to="/taskList"/>
